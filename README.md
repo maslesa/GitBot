@@ -1,8 +1,8 @@
-#GitBot v1.1
-###Overview
+# GitBot v1.1
+### Overview
 GitBot is a command-line tool that helps developers track their GitHub activity and provides AI-generated project recommendations.
 
-###Features
+### Features
 **Repository Management:**
 Check repository activity: repo --activity
 List all repositories: repo --all or repo -a
