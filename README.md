@@ -1,14 +1,9 @@
-# GitBot v1.1
+# GitBot v1.2
 ### Overview
-GitBot is a command-line tool that helps developers track their GitHub activity and provides AI-generated project recommendations.
+GitBot is a command-line assistant designed to help developers track and analyze their GitHub activity. It provides an easy way to check repository activity, list all repositories, and analyze commit history. Additionally, GitBot includes an AI-powered assistant to suggest project ideas and generate README files.
 
 ### Features
-**Repository Management:**
-Check repository activity: repo --activity
-List all repositories: repo --all or repo -a
-**Commit Tracking:**
-View commit activities: commits --activity
-**AI Assistance:**
-Get project suggestions based on repo activity
-Generate README.md files: readme make [repository name]
-
+ - List all repositories on your GitHub account
+ - Check repository activity for the current year
+ - Analyze commit history for all repositories or a specific one
+ - AI-powered assistant to suggest project ideas and generate README files
