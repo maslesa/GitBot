@@ -155,110 +155,114 @@ def upload_readme(readme_text, repo):
 def main():
     print('###GITBOT###\nIf you need help, enter `gitbot --help`\n')
     while True:
-        answer = input('$: ')
-        if answer == 'gitbot --help':
-            print('###GITBOT HELP MENU###')
-            print('\n#repository commands:')
-            print('[check repository activity]: `repo --activity`')
-            print('[list all repositories]: `repo --all` or `repo -a`')
+        try:
+            answer = input('$: ')
+            if answer == 'gitbot --help':
+                print('###GITBOT HELP MENU###')
+                print('\n#repository commands:')
+                print('[check repository activity]: `repo --activity`')
+                print('[list all repositories]: `repo --all` or `repo -a`')
 
-            print('\n#commmits commands:')
-            print('[check all commits activity]: `commits --activity`')
-            print('[check commits activity for specific repo]: `commits --activity --repo=[repository name]`')
+                print('\n#commmits commands:')
+                print('[check all commits activity]: `commits --activity`')
+                print('[check commits activity for specific repo]: `commits --activity --repo=[repository name]`')
 
-            print('\n#gitbot ai helper:')
-            print('[make/update README.md file]: `readme make --repo=[repository name]`')
-            print('[help for choosing next projects]: projects --help')
+                print('\n#gitbot ai helper:')
+                print('[make/update README.md file]: `readme make --repo=[repository name]`')
+                print('[help for choosing next projects]: projects --help')
 
-            print('\n[exit]: gitbot /exit\n')
+                print('\n[exit]: gitbot /exit\n')
 
-        elif answer == 'repo --activity':
-            num_of_repos_this_year = count_repos()
-            print('\nDo you want advice about new projects[yes/no]?')
-            while True:
-                choice = input('>>')
-                if choice == "yes":
-                    ai_answer = f"""I have {num_of_repos_this_year} projects on my GitHub for this year ({YEAR}), 
-                                    and month ({MONTH}) and average is {AVERAGE_NUM_OF_REPOS_PER_YEAR} per year.
-                                    Give me some advice what should I do and what type of projects should I build.
-                                    Use {MAX_TOKENS} tokens max and do not ask answer at the end."""
-                    ai_response = ask_ai(ai_answer)
-                    print(textwrap.fill(ai_response, width=50))
-                    break
-                elif choice == "no":
-                    break
-                else:
-                    print(f'unknown word `{choice}`, please enter `yes` or `no`')
+            elif answer == 'repo --activity':
+                num_of_repos_this_year = count_repos()
+                print('\nDo you want advice about new projects[yes/no]?')
+                while True:
+                    choice = input('>>')
+                    if choice == "yes":
+                        ai_answer = f"""I have {num_of_repos_this_year} projects on my GitHub for this year ({YEAR}), 
+                                        and month ({MONTH}) and average is {AVERAGE_NUM_OF_REPOS_PER_YEAR} per year.
+                                        Give me some advice what should I do and what type of projects should I build.
+                                        Use {MAX_TOKENS} tokens max and do not ask answer at the end."""
+                        ai_response = ask_ai(ai_answer)
+                        print(textwrap.fill(ai_response, width=50))
+                        break
+                    elif choice == "no":
+                        break
+                    else:
+                        print(f'unknown word `{choice}`, please enter `yes` or `no`')
 
-        elif answer in ('repo --all', 'repo -a'):
-            list_all_repos()
+            elif answer in ('repo --all', 'repo -a'):
+                list_all_repos()
 
-        elif answer == 'commits --activity':
-            check_commits()
+            elif answer == 'commits --activity':
+                check_commits()
 
-        elif answer.startswith('commits --activity ') and answer.find('--repo='):
-            repo_name = answer.split("--repo=")[1]
-            check_commits_repo(repo_name)
+            elif answer.startswith('commits --activity ') and answer.find('--repo='):
+                repo_name = answer.split("--repo=")[1]
+                check_commits_repo(repo_name)
 
-        elif answer == 'projects --help':
-            all_repos = get_all_repos()
-            future_projects_themes = input('Enter some themes for future projects you would like to make:')
-            print('Select difficulty for next projects [enter a number]:\n[1] Easy\n[2] Medium\n[3] Hard')
-            while True:
-                difficulty_level = input('>>')
-                if difficulty_level == '1':
-                    difficulty = 'Easy'
-                    break
-                elif difficulty_level == '2':
-                    difficulty = 'Medium'
-                    break
-                elif difficulty_level == '3':
-                    difficulty = 'Hard'
-                    break
-                else:
-                    print(f'Incorrect input `{difficulty_level}`')
-            print('searching for projects...\n')
-            ai_answer = f"""I made this projects: {all_repos}. Help me to choose new ones to make and put them
-                            on my GitHub account. I would like to make projects with themes 
-                            like {future_projects_themes} and the difficulty of this projects have to be on
-                            difficulty level: {difficulty}. Look for previous projects I made and projects I
-                            would like to make and tell me ten new projects I can make and put on my GitHub.
-                            Do not ask question at the end of answer!
-            """
-            ai_response = ask_ai(ai_answer)
-            print(textwrap.fill(ai_response, width=100))
-            print('\n')
+            elif answer == 'projects --help':
+                all_repos = get_all_repos()
+                future_projects_themes = input('Enter some themes for future projects you would like to make:')
+                print('Select difficulty for next projects [enter a number]:\n[1] Easy\n[2] Medium\n[3] Hard')
+                while True:
+                    difficulty_level = input('>>')
+                    if difficulty_level == '1':
+                        difficulty = 'Easy'
+                        break
+                    elif difficulty_level == '2':
+                        difficulty = 'Medium'
+                        break
+                    elif difficulty_level == '3':
+                        difficulty = 'Hard'
+                        break
+                    else:
+                        print(f'Incorrect input `{difficulty_level}`')
+                print('searching for projects...\n')
+                ai_answer = f"""I made this projects: {all_repos}. Help me to choose new ones to make and put them
+                                on my GitHub account. I would like to make projects with themes 
+                                like {future_projects_themes} and the difficulty of this projects have to be on
+                                difficulty level: {difficulty}. Look for previous projects I made and projects I
+                                would like to make and tell me ten new projects I can make and put on my GitHub.
+                                Do not ask question at the end of answer!
+                """
+                ai_response = ask_ai(ai_answer)
+                print(ai_response)
+                print('\n')
 
-        elif answer.startswith('readme make --repo='):
-            repo = answer.split('--repo=')[1]
-            all_repos = get_all_repos()
-            if repo not in all_repos:
-                print('you don\'t have repository with that name.')
-                continue
-            print('Write description for your project:')
-            description = input('>> ')
-            while True:
-                readme_text = generate_readme(description, repo)
-                print('\nREADME.md file:')
-                print(readme_text)
-                choice = input('\nDo you want to upload this README.md file[yes/no] [stop(deny function)]? ')
-                if choice == 'yes':
-                    upload_readme(readme_text, repo)
-                    break
-                elif choice == 'no':
-                    print('generating new README.md file...\n')
+            elif answer.startswith('readme make --repo='):
+                repo = answer.split('--repo=')[1]
+                all_repos = get_all_repos()
+                if repo not in all_repos:
+                    print('you don\'t have repository with that name.')
                     continue
-                elif choice == 'stop':
-                    print('generating README.md file stopped!\n')
-                    break
+                print('Write description for your project:')
+                description = input('>> ')
+                while True:
+                    readme_text = generate_readme(description, repo)
+                    print('\nREADME.md file:')
+                    print(readme_text)
+                    choice = input('\nDo you want to upload this README.md file[yes/no] [stop(deny function)]? ')
+                    if choice == 'yes':
+                        upload_readme(readme_text, repo)
+                        break
+                    elif choice == 'no':
+                        print('generating new README.md file...\n')
+                        continue
+                    elif choice == 'stop':
+                        print('generating README.md file stopped!\n')
+                        break
 
-        elif answer == 'gitbot /exit':
-            print('gitbot canceling...')
-            print('gitbot canceled')
+            elif answer == 'gitbot /exit':
+                print('gitbot canceling...')
+                print('gitbot canceled')
+                break
+
+            else:
+                print('No such a command like `' + answer + '`')
+
+        except KeyboardInterrupt:
             break
-
-        else:
-            print('No such a command like `' + answer + '`')
 
 
 if __name__ == "__main__":
