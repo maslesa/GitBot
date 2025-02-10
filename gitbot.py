@@ -38,11 +38,10 @@ def count_repos():
 
         for repo in repos:
             date = repo['created_at']
-            if date[:4] == str(YEAR):
-                table_data.append([repo['name'], date])
-                num_of_repos += 1
+            table_data.append([repo['name'], date, repo['updated_at']])
+            num_of_repos += 1
 
-        print(tabulate(table_data, headers=["Repository Name", "Created At"], tablefmt="pretty"))
+        print(tabulate(table_data, headers=["Repository Name", "Created At", "Last update"], tablefmt="pretty"))
         return num_of_repos
     else:
         print(f"Error: {response.status_code} - {response.text}")
@@ -175,7 +174,7 @@ def main():
 
         elif answer == 'repo --activity':
             num_of_repos_this_year = count_repos()
-            print('Do you want advice[yes/no]?')
+            print('\nDo you want advice about new projects[yes/no]?')
             while True:
                 choice = input('>>')
                 if choice == "yes":
