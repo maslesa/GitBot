@@ -184,7 +184,7 @@ def main():
                                         Give me some advice what should I do and what type of projects should I build.
                                         Use {MAX_TOKENS} tokens max and do not ask answer at the end."""
                         ai_response = ask_ai(ai_answer)
-                        print(textwrap.fill(ai_response, width=50))
+                        print(textwrap.fill(ai_response, width=100))
                         break
                     elif choice == "no":
                         break
