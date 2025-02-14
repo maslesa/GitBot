@@ -1,8 +1,11 @@
 import textwrap
+import time
+import os
 import requests
 import openai
 import datetime
 import base64
+import sys
 from tabulate import tabulate
 
 
@@ -26,6 +29,14 @@ AVERAGE_NUM_OF_REPOS_PER_YEAR = 20
 YEAR = datetime.datetime.now().year
 MONTH = datetime.datetime.now().month
 MAX_TOKENS = 300
+
+
+def typing(text, delay=0.01):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
 
 
 def count_repos():
@@ -157,6 +168,11 @@ def main():
     while True:
         try:
             answer = input('$: ')
+
+            if answer == "cls":
+                os.system("cls" if os.name == "nt" else "clear")
+                continue
+
             if answer == 'gitbot --help':
                 print('###GITBOT HELP MENU###')
                 print('\n#repository commands:')
@@ -184,7 +200,7 @@ def main():
                                         Give me some advice what should I do and what type of projects should I build.
                                         Use {MAX_TOKENS} tokens max and do not ask answer at the end."""
                         ai_response = ask_ai(ai_answer)
-                        print(textwrap.fill(ai_response, width=100))
+                        typing(textwrap.fill(ai_response, width=100))
                         break
                     elif choice == "no":
                         break
@@ -218,7 +234,7 @@ def main():
                         break
                     else:
                         print(f'Incorrect input `{difficulty_level}`')
-                print('searching for projects...\n')
+                typing('searching for projects...\n')
                 ai_answer = f"""I made this projects: {all_repos}. Help me to choose new ones to make and put them
                                 on my GitHub account. I would like to make projects with themes 
                                 like {future_projects_themes} and the difficulty of this projects have to be on
@@ -227,7 +243,7 @@ def main():
                                 Do not ask question at the end of answer!
                 """
                 ai_response = ask_ai(ai_answer)
-                print(ai_response)
+                typing(ai_response)
                 print('\n')
 
             elif answer.startswith('readme make --repo='):
@@ -254,8 +270,8 @@ def main():
                         break
 
             elif answer == 'gitbot /exit':
-                print('gitbot canceling...')
-                print('gitbot canceled')
+                typing('gitbot canceling...')
+                typing('gitbot canceled')
                 break
 
             else:
