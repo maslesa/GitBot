@@ -163,6 +163,13 @@ def upload_readme(readme_text, repo):
         print(f"Error: {response.status_code} - {response.text}")
 
 
+def save_projects(ai_answer):
+    with open('projects.txt', 'a') as file:
+        file.write(ai_answer + '\n\n')
+        print('\nprojects has been saved successfully in `projects.txt`')
+        file.close()
+
+
 def main():
     print('###GITBOT###\nIf you need help, enter `gitbot --help`\n')
     while True:
@@ -244,7 +251,15 @@ def main():
                 """
                 ai_response = ask_ai(ai_answer)
                 typing(ai_response)
-                print('\n')
+                while True:
+                    save_choice = input('\nDo you want to save this answer?[yes/no]')
+                    if save_choice == 'yes':
+                        save_projects(ai_response)
+                        break
+                    elif save_choice == 'no':
+                        break
+                    else:
+                        print(f'unknown word `{save_choice}`, please enter `yes` or `no`')
 
             elif answer.startswith('readme make --repo='):
                 repo = answer.split('--repo=')[1]
