@@ -67,6 +67,7 @@ def list_all_repos():
         for repo in repos:
             table_data.append([repo['name']])
         print(tabulate(table_data, headers=["Repositories"], tablefmt="pretty"))
+        print()
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -80,6 +81,7 @@ def check_commits():
         for event in events:
             table_data.append([event['repo']['name'][len(USERNAME) + 1:], event['type'], event['created_at']])
         print(tabulate(table_data, headers=["Repository Name", "Event Type", "Created At"], tablefmt="pretty"))
+        print()
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -181,7 +183,7 @@ def main():
                 continue
 
             if answer == 'gitbot --help':
-                print('###GITBOT HELP MENU###')
+                print('\n###GITBOT HELP MENU###')
                 print('\n#repository commands:')
                 print('[check repository activity]: `repo --activity`')
                 print('[list all repositories]: `repo --all` or `repo -a`')
@@ -193,6 +195,7 @@ def main():
                 print('\n#gitbot ai helper:')
                 print('[make/update README.md file]: `readme make --repo=[repository name]`')
                 print('[help for choosing next projects]: projects --help')
+                print('[open saved projects]: projects --view')
 
                 print('\n[exit]: gitbot /exit\n')
 
@@ -208,8 +211,10 @@ def main():
                                         Use {MAX_TOKENS} tokens max and do not ask answer at the end."""
                         ai_response = ask_ai(ai_answer)
                         typing(textwrap.fill(ai_response, width=100))
+                        print()
                         break
                     elif choice == "no":
+                        print()
                         break
                     else:
                         print(f'unknown word `{choice}`, please enter `yes` or `no`')
@@ -261,6 +266,16 @@ def main():
                     else:
                         print(f'unknown word `{save_choice}`, please enter `yes` or `no`')
 
+            elif answer == 'projects --view':
+                # WARNING: when it's opened like an .exe file, it can't find projects.txt file
+                base_path = os.path.dirname(os.path.abspath(__file__))
+
+                file_path = os.path.join(base_path, "dist", "projects.txt")
+                if os.path.exists(file_path):
+                    os.startfile(file_path)
+                else:
+                    print("File not found! Check the path:", file_path)
+
             elif answer.startswith('readme make --repo='):
                 repo = answer.split('--repo=')[1]
                 all_repos = get_all_repos()
@@ -283,6 +298,9 @@ def main():
                     elif choice == 'stop':
                         print('generating README.md file stopped!\n')
                         break
+
+            elif answer == '':
+                continue
 
             elif answer == 'gitbot /exit':
                 typing('gitbot canceling...')
