@@ -1,6 +1,6 @@
 # GitBot v1.5
 ## Overview
-GitBot 1.4 is an AI-powered command-line assistant designed to help developers track and analyze their GitHub activity. It provides insights into repositories, commits, and activity trends while offering AI-generated project suggestions. GitBot also assists in generating structured README.md files using OpenAI's GPT models.
+GitBot 1.5 is an AI-powered command-line assistant designed to help developers track and analyze their GitHub activity. It provides insights into repositories, commits, and activity trends while offering AI-generated project suggestions. GitBot also assists in generating structured README.md files using OpenAI's GPT models.
 
 ## Features
 ### Repository Tracking
